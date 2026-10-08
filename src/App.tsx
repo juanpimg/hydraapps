@@ -29,9 +29,9 @@ interface AppItem {
 }
 
 export default function App() {
-  const editorUrl = typeof window !== 'undefined' && window.location.port === '5174'
-    ? 'http://localhost:5173'
-    : './editor/';
+  const isDev = typeof window !== 'undefined' && window.location.port === '5174';
+  const editorUrl = isDev ? 'http://localhost:5173' : 'https://hydracut.pages.dev/';
+  const dawUrl = isDev ? 'http://localhost:5175' : 'https://hydradaw.pages.dev/';
 
   const apps: AppItem[] = [
     {
@@ -48,16 +48,16 @@ export default function App() {
       gradient: 'from-cyan-500/20 via-blue-500/10 to-transparent',
     },
     {
-      id: 'hydra-voice',
-      name: 'HydraVoice',
-      badge: 'En desarrollo',
-      status: 'coming_soon',
-      category: 'Procesamiento de Audio',
-      description: 'Estudio de corte, masterización y ecualización de audio multicanal con Web Audio API. Visualización espectral y exportación sin pérdida.',
+      id: 'hydra-daw',
+      name: 'HydraDAW',
+      badge: 'v1.0 • Estable',
+      status: 'live',
+      category: 'Grabación, Mezcla & Mastering',
+      description: 'Estación de trabajo de audio digital (DAW) multitrack 100% local. Grabación de canciones, mezcla con channel strips analógicos, masterización con limitador brickwall y soporte para plugins locales estilo VST (WAM 2.0).',
       icon: <Music className="w-6 h-6 text-emerald-400" />,
-      tags: ['AudioContext', 'Spectral FFT', 'Normalización RMS'],
-      launchUrl: '#',
-      accentColor: 'border-emerald-500/30 hover:border-emerald-400/60',
+      tags: ['Web Audio API', 'AudioWorklet', 'Local VST / WAM', 'Mastering LUFS'],
+      launchUrl: dawUrl,
+      accentColor: 'border-emerald-500/40 hover:border-emerald-400',
       gradient: 'from-emerald-500/20 via-teal-500/10 to-transparent',
     },
     {
@@ -130,6 +130,8 @@ export default function App() {
             </a>
             <a
               href={editorUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-semibold shadow-lg shadow-cyan-500/20 transition hover:shadow-cyan-500/30"
             >
               <span>Lanzar HydraCut</span>
@@ -162,6 +164,8 @@ export default function App() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href={editorUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-xl shadow-cyan-500/25 transition transform hover:-translate-y-0.5"
             >
               <Video className="w-4 h-4" />
@@ -262,6 +266,8 @@ export default function App() {
                   {app.status === 'live' ? (
                     <a
                       href={app.launchUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-lg shadow-cyan-500/20 transition group-hover:shadow-cyan-500/30"
                     >
                       <span>Abrir {app.name}</span>
