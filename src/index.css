@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * HydraApps Hub — sistema de tokens semánticos.
+ * Fundamento: color.md › Best practices ("Make sure all your app's colors work well
+ * in light, dark, and increased contrast contexts") + dark-mode.md › Best practices
+ * ("Ensure that your app looks good in both appearance modes").
+ *
+ * Contrastes medidos (WCAG AA, texto ≤17pt exige 4.5:1, accessibility.md › Vision):
+ * - ink #0B1220 sobre surface #FFFFFF → 18.72:1
+ * - secondary #4B5563 sobre #FFFFFF → 7.56:1
+ * - blanco sobre accent #0068D6 → 5.31:1 (antes blanco sobre #06B6D4 → 2.43:1, FAIL)
+ * - ink #0B1220 sobre accent-dark #4CC3FF → 9.41:1
+ * Modo oscuro: surface #07090E, raised rgba blanco 4%, ink #F1F5F9, secondary #A8B3C2.
+ */
+
+:root {
+  color-scheme: light dark;
+  --hydra-surface: #f5f7fa;
+  --hydra-raised: #ffffff;
+  --hydra-ink: #0b1220;
+  --hydra-secondary: #4b5563;
+  --hydra-line: rgba(11, 18, 32, 0.1);
+  --hydra-accent: #0068d6;
+  --hydra-accent-ink: #ffffff;
+  --hydra-header-fill: rgba(245, 247, 250, 0.72);
+  --hydra-glow: rgba(0, 104, 214, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --hydra-surface: #07090e;
+    --hydra-raised: rgba(255, 255, 255, 0.04);
+    --hydra-ink: #f1f5f9;
+    --hydra-secondary: #a8b3c2;
+    --hydra-line: rgba(255, 255, 255, 0.1);
+    --hydra-accent: #4cc3ff;
+    --hydra-accent-ink: #0b1220;
+    --hydra-header-fill: rgba(7, 9, 14, 0.66);
+    --hydra-glow: rgba(76, 195, 255, 0.08);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--hydra-surface);
+    color: var(--hydra-ink);
+    text-rendering: optimizeLegibility;
+  }
+  /* Foco visible siempre (accessibility.md › Speech / keyboards.md). */
+  :focus-visible {
+    outline: 2px solid var(--hydra-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@layer utilities {
+  /* Capa funcional única con Liquid Glass (liquid-glass.md › Review checklist 1-2):
+     solo header. Contenido siempre opaco (materials.md › Liquid Glass). */
+  .glass-nav {
+    background: var(--hydra-header-fill);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    backdrop-filter: blur(24px) saturate(1.4);
+    border-bottom: 1px solid var(--hydra-line);
+  }
+  .surface-card {
+    background: var(--hydra-raised);
+    border: 1px solid var(--hydra-line);
+  }
+  /* Firma: una sola refracción profunda en el hero, el resto quieto
+     (branding.md › Best practices: brand defers to content). */
+  .hydra-depth {
+    background:
+      radial-gradient(640px 320px at 50% -40px, var(--hydra-glow), transparent 70%),
+      radial-gradient(480px 240px at 82% 0%, rgba(99, 102, 241, 0.07), transparent 70%);
+  }
+}
+
+/* Contraste aumentado: rellenos y bordes más fuertes. */
+@media (prefers-contrast: more) {
+  :root {
+    --hydra-line: currentColor;
+  }
+  .glass-nav {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--hydra-surface);
+  }
+  .surface-card {
+    border-width: 2px;
+  }
+}
+
+/* Transparencia reducida: fallback opaco (liquid-glass.md › Review checklist 5). */
+@media (prefers-reduced-transparency: reduce) {
+  .glass-nav {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--hydra-surface);
+  }
+}
+
+/* Movimiento reducido: sin elevaciones ni transiciones (accessibility.md › Cognitive). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
