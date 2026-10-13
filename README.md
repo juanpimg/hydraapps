@@ -66,3 +66,9 @@ npm run build
 ## 📜 Licencia
 
 MIT © 2026 [HydraApps](https://github.com/juanpimg)
+
+---
+
+## ⚖️ Aviso legal
+
+HydraApps son herramientas distribuidas "tal cual" (licencia MIT), sin garantías de ningún tipo. El autor no responde de daños directos o indirectos ni del uso que se haga de ellas. Eres responsable de utilizarlas conforme a las leyes de tu jurisdicción y de respetar los derechos de terceros. Consulta el aviso legal de cada aplicación.
