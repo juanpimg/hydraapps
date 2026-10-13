@@ -57,10 +57,10 @@ export default function App() {
     {
       id: 'hydra-downloader',
       name: 'HydraDownloader',
-      tagline: 'Descarga vídeo y audio multisitio.',
+      tagline: 'Descarga directa 100% local, sin APIs ni servidores.',
       status: 'live',
       isExternal: true,
-      badge: 'Nuevo',
+      badge: '100% local',
       icon: <Download className="h-5 w-5" aria-hidden="true" />,
       launchUrl: resolveUrl('5177', 'https://hydradownloader.pages.dev/'),
     },
