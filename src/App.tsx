@@ -7,6 +7,7 @@ import {
   Github,
   Layers,
   Download,
+  Smartphone,
   ArrowUpRight,
 } from 'lucide-react';
 
@@ -63,6 +64,16 @@ export default function App() {
       badge: '100% local',
       icon: <Download className="h-5 w-5" aria-hidden="true" />,
       launchUrl: resolveUrl('5177', 'https://hydradownloader.pages.dev/'),
+    },
+    {
+      id: 'hydra-controller',
+      name: 'HydraController',
+      tagline: 'Tu PC Linux en tu móvil, en red local.',
+      status: 'live',
+      isExternal: true,
+      badge: 'Nuevo',
+      icon: <Smartphone className="h-5 w-5" aria-hidden="true" />,
+      launchUrl: resolveUrl('5173', 'https://hydracontroller.pages.dev/'),
     },
     {
       id: 'hydra-lens',
