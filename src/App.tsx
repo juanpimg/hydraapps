@@ -36,7 +36,7 @@ export default function App() {
       tagline: 'Edita vídeo multitrack en el navegador.',
       status: 'live',
       icon: <Video className="h-5 w-5" aria-hidden="true" />,
-      launchUrl: resolveUrl('5173', './editor/'),
+      launchUrl: resolveUrl('5173', 'https://hydracut.pages.dev/'),
     },
     {
       id: 'hydra-daw',
@@ -44,7 +44,7 @@ export default function App() {
       tagline: 'Graba, mezcla y masteriza audio.',
       status: 'live',
       icon: <Music className="h-5 w-5" aria-hidden="true" />,
-      launchUrl: resolveUrl('5175', './daw/'),
+      launchUrl: resolveUrl('5175', 'https://hydradaw.pages.dev/'),
     },
     {
       id: 'hydra-convert',
@@ -52,7 +52,7 @@ export default function App() {
       tagline: 'Convierte vídeo, audio e imagen.',
       status: 'live',
       icon: <Layers className="h-5 w-5" aria-hidden="true" />,
-      launchUrl: resolveUrl('5176', './convert/'),
+      launchUrl: resolveUrl('5176', 'https://hydraconverter.pages.dev/'),
     },
     {
       id: 'hydra-downloader',
@@ -89,7 +89,7 @@ export default function App() {
             <span className="font-display text-lg font-extrabold tracking-tight">HydraApps</span>
           </p>
           <a
-            href="https://github.com"
+            href="https://github.com/juanpimg"
             target="_blank"
             rel="noreferrer"
             aria-label="Ver HydraApps en GitHub (pestaña nueva)"
