@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Video,
   Music,
@@ -10,17 +10,7 @@ import {
   Smartphone,
   ArrowUpRight,
 } from 'lucide-react';
-
-interface AppItem {
-  id: string;
-  name: string;
-  tagline: string;
-  status: 'live' | 'coming_soon';
-  isExternal?: boolean;
-  badge?: string;
-  icon: React.ReactNode;
-  launchUrl: string;
-}
+import { STRINGS, detectLang, persistLang, type AppId, type Lang } from './i18n';
 
 function resolveUrl(port: string, path: string, production?: string): string {
   if (typeof window !== 'undefined' && window.location.port === '5174') {
@@ -29,62 +19,40 @@ function resolveUrl(port: string, path: string, production?: string): string {
   return production ?? path;
 }
 
+interface AppDef {
+  id: AppId;
+  name: string;
+  status: 'live' | 'coming_soon';
+  isExternal?: boolean;
+  icon: React.ReactNode;
+  port: string;
+  prod: string;
+}
+
+const DEFS: AppDef[] = [
+  { id: 'hydra-cut', name: 'HydraCut', status: 'live', icon: <Video className="h-5 w-5" aria-hidden="true" />, port: '5173', prod: 'https://hydracut.pages.dev/' },
+  { id: 'hydra-daw', name: 'HydraDAW', status: 'live', icon: <Music className="h-5 w-5" aria-hidden="true" />, port: '5175', prod: 'https://hydradaw.pages.dev/' },
+  { id: 'hydra-convert', name: 'HydraConvert', status: 'live', icon: <Layers className="h-5 w-5" aria-hidden="true" />, port: '5176', prod: 'https://hydraconverter.pages.dev/' },
+  { id: 'hydra-downloader', name: 'HydraDownloader', status: 'live', isExternal: true, icon: <Download className="h-5 w-5" aria-hidden="true" />, port: '5177', prod: 'https://hydradownloader.pages.dev/' },
+  { id: 'hydra-controller', name: 'HydraController', status: 'live', isExternal: true, icon: <Smartphone className="h-5 w-5" aria-hidden="true" />, port: '5173', prod: 'https://hydracontroller.pages.dev/' },
+  { id: 'hydra-lens', name: 'HydraLens', status: 'coming_soon', icon: <ImageIcon className="h-5 w-5" aria-hidden="true" />, port: '', prod: '#' },
+];
+
 export default function App() {
-  const apps: AppItem[] = [
-    {
-      id: 'hydra-cut',
-      name: 'HydraCut',
-      tagline: 'Edita vídeo multitrack en el navegador.',
-      status: 'live',
-      icon: <Video className="h-5 w-5" aria-hidden="true" />,
-      launchUrl: resolveUrl('5173', 'https://hydracut.pages.dev/'),
-    },
-    {
-      id: 'hydra-daw',
-      name: 'HydraDAW',
-      tagline: 'Graba, mezcla y masteriza audio.',
-      status: 'live',
-      icon: <Music className="h-5 w-5" aria-hidden="true" />,
-      launchUrl: resolveUrl('5175', 'https://hydradaw.pages.dev/'),
-    },
-    {
-      id: 'hydra-convert',
-      name: 'HydraConvert',
-      tagline: 'Convierte vídeo, audio e imagen.',
-      status: 'live',
-      icon: <Layers className="h-5 w-5" aria-hidden="true" />,
-      launchUrl: resolveUrl('5176', 'https://hydraconverter.pages.dev/'),
-    },
-    {
-      id: 'hydra-downloader',
-      name: 'HydraDownloader',
-      tagline: 'Descarga directa 100% local, sin APIs ni servidores.',
-      status: 'live',
-      isExternal: true,
-      badge: '100% local',
-      icon: <Download className="h-5 w-5" aria-hidden="true" />,
-      launchUrl: resolveUrl('5177', 'https://hydradownloader.pages.dev/'),
-    },
-    {
-      id: 'hydra-controller',
-      name: 'HydraController',
-      tagline: 'Tu PC Linux en tu móvil, en red local.',
-      status: 'live',
-      isExternal: true,
-      badge: 'Nuevo',
-      icon: <Smartphone className="h-5 w-5" aria-hidden="true" />,
-      launchUrl: resolveUrl('5173', 'https://hydracontroller.pages.dev/'),
-    },
-    {
-      id: 'hydra-lens',
-      name: 'HydraLens',
-      tagline: 'Retoque fotográfico.',
-      status: 'coming_soon',
-      badge: 'Pronto',
-      icon: <ImageIcon className="h-5 w-5" aria-hidden="true" />,
-      launchUrl: '#',
-    },
-  ];
+  const [lang, setLang] = useState<Lang>(() => detectLang());
+  const t = STRINGS[lang];
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    persistLang(lang);
+  }, [lang]);
+
+  const apps = DEFS.map((d) => ({
+    ...d,
+    tagline: t.apps[d.id].tagline,
+    badge: t.apps[d.id].badge,
+    launchUrl: d.prod === '#' ? '#' : resolveUrl(d.port, d.prod),
+  }));
 
   return (
     <div className="flex min-h-screen flex-col bg-surface font-sans text-ink antialiased">
@@ -99,28 +67,48 @@ export default function App() {
             </span>
             <span className="font-display text-lg font-extrabold tracking-tight">HydraApps</span>
           </p>
-          <a
-            href="https://github.com/juanpimg/hydraapps"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Ver HydraApps en GitHub (pestaña nueva)"
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-secondary transition hover:text-ink"
-          >
-            <Github className="h-5 w-5" aria-hidden="true" />
-          </a>
+          <div className="flex items-center gap-1">
+            <div
+              role="group"
+              aria-label={t.langAria}
+              className="flex items-center rounded-lg border border-line p-0.5"
+            >
+              {(['es', 'en'] as const).map((l) => (
+                <button
+                  key={l}
+                  type="button"
+                  onClick={() => setLang(l)}
+                  aria-pressed={lang === l}
+                  aria-label={`${t.langAria}: ${l === 'es' ? 'Español' : 'English'}`}
+                  className={`inline-flex min-h-[40px] min-w-[44px] items-center justify-center rounded-md px-2 font-mono text-xs font-semibold transition ${
+                    lang === l ? 'bg-accent text-accentInk' : 'text-secondary hover:text-ink'
+                  }`}
+                >
+                  {l.toUpperCase()}
+                </button>
+              ))}
+            </div>
+            <a
+              href="https://github.com/juanpimg/hydraapps"
+              target="_blank"
+              rel="noreferrer"
+              aria-label={t.githubAria}
+              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-secondary transition hover:text-ink"
+            >
+              <Github className="h-5 w-5" aria-hidden="true" />
+            </a>
+          </div>
         </div>
       </header>
 
       <main className="flex-1">
         <div className="hydra-depth mx-auto max-w-3xl px-4 pb-10 pt-12 sm:px-6">
           <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Tus herramientas, <span className="text-accent">en tu dispositivo.</span>
+            {t.heroA} <span className="text-accent">{t.heroB}</span>
           </h1>
-          <p className="mt-2 text-base text-secondary">
-            Elige una app para empezar. Sin cuentas, sin subidas.
-          </p>
+          <p className="mt-2 text-base text-secondary">{t.heroSub}</p>
 
-          <nav aria-label="Suite Hydra" className="mt-8">
+          <nav aria-label={t.navAria} className="mt-8">
             <ul className="flex flex-col gap-3">
               {apps.map((app) =>
                 app.status === 'live' ? (
@@ -130,7 +118,7 @@ export default function App() {
                       {...(app.isExternal
                         ? { target: '_blank', rel: 'noopener noreferrer' }
                         : {})}
-                      aria-label={`Abrir ${app.name}: ${app.tagline}${app.isExternal ? ' (pestaña nueva)' : ''}`}
+                      aria-label={`${t.openVerb} ${app.name}: ${app.tagline}${app.isExternal ? ` ${t.newTabNote}` : ''}`}
                       className="surface-card group flex min-h-[72px] items-center gap-4 rounded-2xl p-4 transition hover:shadow-lg"
                     >
                       <span aria-hidden="true" className="rounded-xl border border-line bg-surface p-3">
@@ -158,7 +146,7 @@ export default function App() {
                   <li
                     key={app.id}
                     aria-disabled="true"
-                    title={`${app.name} próximamente`}
+                    title={`${app.name} ${t.soonWord}`}
                     className="surface-card flex min-h-[72px] cursor-not-allowed items-center gap-4 rounded-2xl p-4 opacity-60"
                   >
                     <span aria-hidden="true" className="rounded-xl border border-line bg-surface p-3">
@@ -185,8 +173,7 @@ export default function App() {
 
       <footer className="border-t border-line py-6">
         <p className="mx-auto max-w-3xl px-4 text-center text-xs text-secondary sm:px-6">
-          <strong className="text-ink">HydraApps</strong> · 100 % client-side — tus archivos nunca
-          salen de tu equipo.
+          <strong className="text-ink">HydraApps</strong> {t.footerNote}
         </p>
       </footer>
     </div>
