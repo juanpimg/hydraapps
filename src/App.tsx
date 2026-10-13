@@ -22,8 +22,10 @@ function resolveUrl(port: string, path: string, production?: string): string {
 interface AppDef {
   id: AppId;
   name: string;
-  status: 'live' | 'coming_soon';
+  status: 'live' | 'coming_soon' | 'help';
   isExternal?: boolean;
+  /** URL directa sin override de dev (p. ej. repo para colaborar). */
+  direct?: string;
   icon: React.ReactNode;
   port: string;
   prod: string;
@@ -33,7 +35,7 @@ const DEFS: AppDef[] = [
   { id: 'hydra-cut', name: 'HydraCut', status: 'live', icon: <Video className="h-5 w-5" aria-hidden="true" />, port: '5173', prod: 'https://hydracut.pages.dev/' },
   { id: 'hydra-daw', name: 'HydraDAW', status: 'live', icon: <Music className="h-5 w-5" aria-hidden="true" />, port: '5175', prod: 'https://hydradaw.pages.dev/' },
   { id: 'hydra-convert', name: 'HydraConvert', status: 'live', icon: <Layers className="h-5 w-5" aria-hidden="true" />, port: '5176', prod: 'https://hydraconverter.pages.dev/' },
-  { id: 'hydra-downloader', name: 'HydraDownloader', status: 'live', isExternal: true, icon: <Download className="h-5 w-5" aria-hidden="true" />, port: '5177', prod: 'https://hydradownloader.pages.dev/' },
+  { id: 'hydra-downloader', name: 'HydraDownloader', status: 'help', direct: 'https://github.com/juanpimg/hydradownloader', icon: <Download className="h-5 w-5" aria-hidden="true" />, port: '5177', prod: 'https://hydradownloader.pages.dev/' },
   { id: 'hydra-controller', name: 'HydraController', status: 'live', isExternal: true, icon: <Smartphone className="h-5 w-5" aria-hidden="true" />, port: '5173', prod: 'https://hydracontroller.pages.dev/' },
   { id: 'hydra-lens', name: 'HydraLens', status: 'coming_soon', icon: <ImageIcon className="h-5 w-5" aria-hidden="true" />, port: '', prod: '#' },
 ];
@@ -51,7 +53,8 @@ export default function App() {
     ...d,
     tagline: t.apps[d.id].tagline,
     badge: t.apps[d.id].badge,
-    launchUrl: d.prod === '#' ? '#' : resolveUrl(d.port, d.prod),
+    launchUrl: d.direct ?? (d.prod === '#' ? '#' : resolveUrl(d.port, d.prod)),
+    newTab: Boolean(d.direct ?? d.isExternal),
   }));
 
   return (
@@ -111,14 +114,14 @@ export default function App() {
           <nav aria-label={t.navAria} className="mt-8">
             <ul className="flex flex-col gap-3">
               {apps.map((app) =>
-                app.status === 'live' ? (
+                app.status !== 'coming_soon' ? (
                   <li key={app.id}>
                     <a
                       href={app.launchUrl}
-                      {...(app.isExternal
+                      {...(app.newTab
                         ? { target: '_blank', rel: 'noopener noreferrer' }
                         : {})}
-                      aria-label={`${t.openVerb} ${app.name}: ${app.tagline}${app.isExternal ? ` ${t.newTabNote}` : ''}`}
+                      aria-label={`${app.status === 'help' ? t.collabVerb : t.openVerb} ${app.name}: ${app.tagline}${app.newTab ? ` ${t.newTabNote}` : ''}`}
                       className="surface-card group flex min-h-[72px] items-center gap-4 rounded-2xl p-4 transition hover:shadow-lg"
                     >
                       <span aria-hidden="true" className="rounded-xl border border-line bg-surface p-3">
@@ -135,7 +138,9 @@ export default function App() {
                         </span>
                         <span className="block truncate text-sm text-secondary">{app.tagline}</span>
                       </span>
-                      {app.isExternal ? (
+                      {app.status === 'help' ? (
+                        <Github className="h-5 w-5 shrink-0 text-secondary transition group-hover:text-ink" aria-hidden="true" />
+                      ) : app.newTab ? (
                         <ExternalLink className="h-5 w-5 shrink-0 text-secondary transition group-hover:text-ink" aria-hidden="true" />
                       ) : (
                         <ArrowUpRight className="h-5 w-5 shrink-0 text-secondary transition group-hover:text-ink" aria-hidden="true" />

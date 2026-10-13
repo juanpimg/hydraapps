@@ -26,6 +26,7 @@ interface Strings {
   heroSub: string;
   navAria: string;
   openVerb: string;
+  collabVerb: string;
   newTabNote: string;
   soonWord: string;
   footerNote: string;
@@ -40,6 +41,7 @@ const es: Strings = {
   heroSub: 'Elige una app para empezar. Sin cuentas, sin subidas.',
   navAria: 'Suite Hydra',
   openVerb: 'Abrir',
+  collabVerb: 'Colabora en',
   newTabNote: '(pestaña nueva)',
   soonWord: 'próximamente',
   footerNote: '· 100 % client-side — tus archivos nunca salen de tu equipo.',
@@ -49,7 +51,7 @@ const es: Strings = {
     'hydra-convert': { tagline: 'Convierte vídeo, audio e imagen.' },
     'hydra-downloader': {
       tagline: 'Descarga directa 100% local, sin APIs ni servidores.',
-      badge: '100% local',
+      badge: 'En desarrollo',
     },
     'hydra-controller': {
       tagline: 'Tu PC Linux en tu móvil, en red local.',
@@ -67,6 +69,7 @@ const en: Strings = {
   heroSub: 'Pick an app to get started. No accounts, no uploads.',
   navAria: 'Hydra suite',
   openVerb: 'Open',
+  collabVerb: 'Contribute to',
   newTabNote: '(new tab)',
   soonWord: 'coming soon',
   footerNote: '· 100% client-side — your files never leave your device.',
@@ -76,7 +79,7 @@ const en: Strings = {
     'hydra-convert': { tagline: 'Convert video, audio and images.' },
     'hydra-downloader': {
       tagline: 'Direct 100% local downloads, no APIs or servers.',
-      badge: '100% local',
+      badge: 'In development',
     },
     'hydra-controller': {
       tagline: 'Your Linux PC on your phone, on your local network.',
