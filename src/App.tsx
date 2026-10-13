@@ -89,7 +89,7 @@ export default function App() {
             <span className="font-display text-lg font-extrabold tracking-tight">HydraApps</span>
           </p>
           <a
-            href="https://github.com/juanpimg"
+            href="https://github.com/juanpimg/hydraapps"
             target="_blank"
             rel="noreferrer"
             aria-label="Ver HydraApps en GitHub (pestaña nueva)"
