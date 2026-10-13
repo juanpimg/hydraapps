@@ -15,6 +15,8 @@
 | **🎬 HydraCut** (`apps/hydra-cut`, `:5173`) | ✅ **v1.0 Live** | Editor de video multitrack con transiciones, waveforms y exportación MP4 instantánea | WebCodecs, mp4-muxer, Web Audio API, Canvas 60 FPS |
 | **🎚️ HydraDAW** (`apps/hydra-daw`, `:5175`) | ✅ **v1.0 Live** | DAW multitrack: grabación, mezcla, mastering con limitador brickwall y exportación WAV | Web Audio API, IndexedDB, LUFS |
 | **⚡ HydraConvert** (`apps/hydra-convert`, `:5176`) | ✅ **v1.0 Live** | Conversor de vídeo, audio e imagen 100% local, sin servidor | WebCodecs, Canvas 2D, WebAudio |
+| **📥 HydraDownloader** (`apps/hydra-downloader`, `:5177`) | ✅ **v1.0 Live** | Descargador multimedia universal client-side estilo Cobalt & Apple HIG | React, extractores públicos, Tailwind |
+| **📱 HydraController** (`apps/hydra-controller`, `:8443`) | 🧪 **Beta local** | Deck táctil móvil para Linux: sesiones virtuales, uinput y streaming <30ms (solo LAN) | Express, WebSocket, WebCodecs, gamescope |
 | **📸 HydraLens** | ⏳ Próximamente | Retoque fotográfico de alta precisión y conversión de formatos | WebGL 2.0, LUT Shaders, AVIF / WebP |
 
 ---

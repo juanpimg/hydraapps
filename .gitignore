@@ -15,3 +15,15 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
+
+# secrets / env — nunca subir claves ni certificados locales
+.env*
+!.env.example
+.certs/
+*.pem
+*.key
+
+# test artefacts + herramientas locales (rutas absolutas)
+test-artifacts/
+.agents/
+.code-review-graph/
